@@ -1,0 +1,24 @@
+<%- include('includes/navbar'); %>
+
+<section class="container">
+    <div class="marca">
+        <h2>Bem vindo ao Sistema de Cadastro de Produtos</h2>
+        <p>Já uma conta?</p>
+        <a id="direciona-login" href="/login">Entrar</a>
+    </div>
+
+    <div class="formulario">
+        <h1 class="titulo-login">Entre com a Sua Conta</h1>
+        <%- include('includes/errorMessages'); %>
+        <%- include('includes/successMessages'); %>
+        <form action="/register" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="text" name="nome" placeholder="Seu Nome"><br>
+            <input type="text" name="email" placeholder="Seu E-mail"><br>
+            <input type="password" name="senha" placeholder="Sua Senha"><br>
+            <button type="submit" class="btn-logar">Criar Conta</button>
+        </form>
+    </div>
+</section>
+
+<%- include('includes/footer'); %>

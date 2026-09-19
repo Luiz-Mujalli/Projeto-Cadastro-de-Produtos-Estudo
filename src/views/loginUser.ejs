@@ -1,0 +1,82 @@
+<%- include('includes/navbar'); %>
+
+<section class="container">
+    <div class="container-user-login">
+        <h2>Olá <%= user.nome %>! Bem Vindo Novamente!</h2>
+
+        <%- include('includes/errorMessages'); %>
+        <%- include('includes/successMessages'); %>
+        <div class="formulario-user">
+            <h4 class="titulos-produtos-user">Cadastro de Produtos</h4>
+            <form action="/perfilDoUsuario" method="POSt">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="text" name="nome" placeholder="Nome do Produto"><br>
+                <input type="number" name="preco" placeholder="Preço do Produto"><br>
+                <input type="text" name="categoria" placeholder="Categoria do Produto"><br>
+                <button type="submit">Cadastrar Produto</button>
+            </form>
+        </div>
+
+
+        <h2>Seus Produtos Cadastrados São:</h2>
+        <% if (produtos.length === 0) { %>
+            <p class="sem-produto">Nenhum produto cadastrado ainda.</p>
+        <% } else { %>
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th class="item">Nome</th>
+                        <th class="item">Preço</th>
+                        <th class="item">Categoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% produtos.forEach(produto => { %>
+                        <tr>
+                            <td class="item"><%= produto.nome %></td>
+                            <td class="item">R$<%= produto.preco %>,00</td>
+                            <td class="item"><%= produto.categoria %></td>
+                            <td>
+                                <form action="/perfilDoUsuario/delete/<%= produto.id %>" method="POST">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <button id="btn-delete">❌</button>
+                                </form>
+
+                                <button id="btn-edit"
+                                        class="btn-abrir-modal"
+                                        type="button"
+                                        data-id="<%= produto.id %>"
+                                        data-nome="<%= produto.nome %>"
+                                        data-preco="<%= produto.preco %>"
+                                        data-categoria="<%= produto.categoria %>">✏️</button>
+                            </td>
+                        </tr>
+                    <% }); %>    
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+
+</section>
+
+<div class="modal-overlay" id="modalEditar">
+    <div class="modal-container">
+        <h2>Editar Produto</h2>
+        <%- include('includes/errorMessages'); %>
+        <%- include('includes/successMessages'); %>
+        <form action="" method="post" id="formEditar">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="text" name="nome" id="modalNome" placeholder="Nome do Produto"><br>
+            <input type="number" name="preco" id="modalPreco" placeholder="Preço do Produto"><br>
+            <input type="text" name="categoria" id="modalCategoria" placeholder="Categoria do Produto"><br>
+            
+            <div class="modal-acoes">
+                <button class="btn-salvar" type="submit">Salvar Alterações</button>
+                <button class="btn-cancelar" type="button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module" src="/frontend/js/main.js"></script>
+<%- include('includes/footer'); %>
